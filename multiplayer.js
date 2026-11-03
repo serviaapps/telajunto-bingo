@@ -31,7 +31,7 @@ function makeCard(){
  throw new Error("Não foi possível gerar cartela.");
 }
 function validName(v){const n=v.trim().replace(/\s+/g," ");if(n.length<2||n.length>40)throw new Error("Informe um nome de 2 a 40 caracteres.");return n;}
-function readMarks(){return card?.marked?card.marked.split(",").filter(Boolean).map(Number):[];}
+function readMarks(){return card?.marked?card.marked.slice(1).split(",").filter(Boolean).map(Number):[];}
 function render(){
  if(!room||!card)return;
  const drawn=Object.keys(room.drawnMap||{}).map(Number).sort((a,b)=>a-b);
@@ -51,7 +51,7 @@ function render(){
    b.setAttribute("aria-pressed",String(marks.has(n)));
    b.onclick=async()=>{if(busy)return;setBusy(true);try{
     const next=new Set(readMarks());if(next.has(n))next.delete(n);else next.add(n);
-    const str=[...next].sort((a,b)=>a-b).join(",");
+    const str="_"+[...next].sort((a,b)=>a-b).join(",");
     await set(ref(db,"privateRooms/"+roomId+"/"+auth.currentUser.uid+"/marked"),str);
     $("gameMessage").textContent=verifyBingo(card.grid,drawn)?"Bingo conferido localmente com os números da sala!":"Marcação salva.";
    }catch(e){$("gameMessage").textContent=error(e);}finally{setBusy(false);}};
@@ -69,7 +69,7 @@ function watch(id,isHost){
 async function ensureCard(id){
  const p=ref(db,"privateRooms/"+id+"/"+auth.currentUser.uid);
  const snap=await get(p);
- if(!snap.exists())await set(p,{grid:makeCard(),marked:""});
+ if(!snap.exists())await set(p,{grid:makeCard(),marked:"_"});
 }
 $("createRoom").onclick=async()=>{
  setBusy(true);try{
