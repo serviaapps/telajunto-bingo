@@ -40,20 +40,20 @@ function render(){
  $("drawCounter").textContent=drawn.length+" de 90 números";
  $("liveHistory").replaceChildren();
  for(const n of drawn){const s=document.createElement("span");s.className="history-ball";s.textContent=n;$("liveHistory").append(s);}
- $("liveDrawBtn").hidden=!host;
+ $("liveDrawBtn").hidden=!host;\n const bingoReady=verifyBingo(card.grid,drawn);\n $("gameMessage").dataset.bingoPossible=String(bingoReady);
  const marks=new Set(readMarks()),grid=$("liveCard");grid.replaceChildren();
  for(const row of card.grid)for(const n of row){
   const b=document.createElement("button");b.type="button";b.className="bingo-cell";
   if(n===null){b.disabled=true;b.textContent="·";b.classList.add("blank");}
   else{
    b.textContent=n;b.classList.add("markable");if(marks.has(n))b.classList.add("marked");
-   if(drawn.includes(n))b.classList.add("called");
+   // O sorteio nunca marca a cartela automaticamente.\n   // Apenas a ação manual do convidado altera a marcação.
    b.setAttribute("aria-pressed",String(marks.has(n)));
    b.onclick=async()=>{if(busy)return;setBusy(true);try{
     const next=new Set(readMarks());if(next.has(n))next.delete(n);else next.add(n);
     const str="_"+[...next].sort((a,b)=>a-b).join(",");
     await set(ref(db,"privateRooms/"+roomId+"/"+auth.currentUser.uid+"/marked"),str);
-    $("gameMessage").textContent=verifyBingo(card.grid,drawn)?"Bingo conferido localmente com os números da sala!":"Marcação salva.";
+    $("gameMessage").textContent="Marcação manual salva. Confira os números sorteados antes de anunciar Bingo.";
    }catch(e){$("gameMessage").textContent=error(e);}finally{setBusy(false);}};
   }grid.append(b);
  }
