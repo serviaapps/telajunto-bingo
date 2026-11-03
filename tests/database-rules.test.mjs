@@ -53,3 +53,12 @@ test('não permite convidado se promover a anfitrião',async()=>{
  await assertFails(set(p(stranger,roomPath+'/members/stranger'),{name:'Intruso',role:'host',joinedAt:now}));
  await assertFails(set(p(guest,roomPath+'/members/guest/role'),'host'));
 });
+
+// Regressões de isolamento: anfitrião não pode acessar cartela de outro usuário;
+// convidados não podem alterar número sorteado nem sobrescrever cartelas existentes.
+test('impede alterações de cartela de terceiros e regravação de cartela própria',async()=>{
+ await assertFails(set(p(host,'privateRooms/'+room+'/guest/marked'),'_1'));
+ await assertFails(set(p(guest,'privateRooms/'+room+'/guest'),{grid,marked:'_'}));
+ await assertFails(set(p(stranger,roomPath+'/hostUid'),'stranger'));
+ await assertFails(set(p(guest,roomPath+'/drawnMap/43'),true));
+});
