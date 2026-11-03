@@ -16,6 +16,9 @@
           "$number": {
             ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('hostUid').val() && root.child('rooms').child($roomId).child('expiresAt').val() > now && !data.exists() && newData.val() === true && $number.matches(/^(?:[1-9]|[1-8][0-9]|90)$/)"
           }
+        },
+        "expiresAt": {
+          ".read": "auth != null"
         }
       }
     },
