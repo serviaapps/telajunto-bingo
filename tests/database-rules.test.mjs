@@ -62,3 +62,17 @@ test('impede alterações de cartela de terceiros e regravação de cartela pró
  await assertFails(set(p(stranger,roomPath+'/hostUid'),'stranger'));
  await assertFails(set(p(guest,roomPath+'/drawnMap/43'),true));
 });
+
+// Casos negativos adicionais executados somente no emulador Firebase.
+test('não autenticado não lê cartelas privadas nem participa da sala',async()=>{
+ await assertFails(get(p(anon,'privateRooms/'+room+'/guest')));
+ await assertFails(set(p(anon,roomPath+'/members/anonymous'),{name:'Anonimo',role:'player',joinedAt:now}));
+});
+test('participante não cria cartela em nome de outra identidade',async()=>{
+ await assertFails(set(p(guest,'privateRooms/'+room+'/host'),{grid,marked:'_'}));
+ await assertFails(get(p(stranger,'privateRooms/'+room+'/host')));
+});
+test('entrada recusa nome inválido e papel de anfitrião',async()=>{
+ await assertFails(set(p(stranger,roomPath+'/members/stranger'),{name:'A',role:'player',joinedAt:now}));
+ await assertFails(set(p(stranger,roomPath+'/members/stranger'),{name:'Intruso',role:'host',joinedAt:now}));
+});
