@@ -40,14 +40,18 @@ function render(){
  $("drawCounter").textContent=drawn.length+" de 90 números";
  $("liveHistory").replaceChildren();
  for(const n of drawn){const s=document.createElement("span");s.className="history-ball";s.textContent=n;$("liveHistory").append(s);}
- $("liveDrawBtn").hidden=!host;\n $("tvAccess").hidden=!host;\n const bingoReady=verifyBingo(card.grid,drawn);\n $("gameMessage").dataset.bingoPossible=String(bingoReady);
+ $("liveDrawBtn").hidden=!host;
+ $("tvAccess").hidden=!host;
+ const bingoReady=verifyBingo(card.grid,drawn);
+ $("gameMessage").dataset.bingoPossible=String(bingoReady);
  const marks=new Set(readMarks()),grid=$("liveCard");grid.replaceChildren();
  for(const row of card.grid)for(const n of row){
   const b=document.createElement("button");b.type="button";b.className="bingo-cell";
   if(n===null){b.disabled=true;b.textContent="·";b.classList.add("blank");}
   else{
    b.textContent=n;b.classList.add("markable");if(marks.has(n))b.classList.add("marked");
-   // O sorteio nunca marca a cartela automaticamente.\n   // Apenas a ação manual do convidado altera a marcação.
+   // O sorteio nunca marca a cartela automaticamente.
+   // Apenas a ação manual do convidado altera a marcação.
    b.setAttribute("aria-pressed",String(marks.has(n)));
    b.onclick=async()=>{if(busy)return;setBusy(true);try{
     const next=new Set(readMarks());if(next.has(n))next.delete(n);else next.add(n);
@@ -62,7 +66,9 @@ function watch(id,isHost){
  unsub.forEach(f=>f());unsub=[];roomId=id;host=isHost;
  $("roomPanel").hidden=false;$("roomTitle").textContent="Sala "+id;
  const invite=new URL("./multiplayer.html",location.href);invite.searchParams.set("sala",id);
- $("inviteLink").href=invite.href;$("inviteLink").textContent=invite.href;\n const tv=new URL("./tv.html",location.href);tv.searchParams.set("sala",id);$("tvLink").href=tv.href;\n history.replaceState(null,"",invite.href);
+ $("inviteLink").href=invite.href;$("inviteLink").textContent=invite.href;
+ const tv=new URL("./tv.html",location.href);tv.searchParams.set("sala",id);$("tvLink").href=tv.href;
+ history.replaceState(null,"",invite.href);
  unsub.push(onValue(ref(db,"rooms/"+id),snap=>{room=snap.val();if(!room){$("gameMessage").textContent="Sala indisponível.";return;}render();},e=>$("gameMessage").textContent=error(e)));
  unsub.push(onValue(ref(db,"privateRooms/"+id+"/"+auth.currentUser.uid),snap=>{card=snap.val();render();},e=>$("gameMessage").textContent=error(e)));
 }
@@ -104,7 +110,8 @@ $("liveDrawBtn").onclick=async()=>{
   const available=Array.from({length:90},(_,i)=>i+1).filter(n=>!used.has(n));
   if(!available.length)throw new Error("Todos os números foram sorteados.");
   const n=available[randomNumber(available.length)];
-  await set(ref(db,"rooms/"+roomId+"/drawnMap/"+n),true);\n  await set(ref(db,"rooms/"+roomId+"/lastDraw"),n);
+  await set(ref(db,"rooms/"+roomId+"/drawnMap/"+n),true);
+  await set(ref(db,"rooms/"+roomId+"/lastDraw"),n);
   $("gameMessage").textContent="Número sorteado: "+n;
  }catch(e){$("gameMessage").textContent=error(e);}finally{setBusy(false);}
 };
