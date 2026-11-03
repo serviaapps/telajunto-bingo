@@ -1,31 +1,24 @@
-# Publicação controlada — TelaJunto Bingo V1.1
+# Implantação controlada — TelaJunto Bingo V1.1 (Spark)
 
-**Situação:** código de cliente e backend preparado na branch de desenvolvimento; **não implantado** no Firebase e **não publicado** no GitHub Pages. Não anunciar multiplayer funcional antes de testes.
+**Não implantado.** A V1 original em `main` deve permanecer intacta. Não publicar regras sem autorização expressa.
 
-Projeto Firebase: `servia-marca-ai`
-Realtime Database: `https://servia-marca-ai-default-rtdb.firebaseio.com`
-Região das Functions: `us-central1`
+A implementação atual usa **Firebase Authentication anônimo + Realtime Database + GitHub Pages**, sem Cloud Functions e sem exigência de Blaze para o fluxo básico. O guia antigo desta página, que mencionava Functions, foi substituído por estar desatualizado.
 
-## Pré-requisitos e autorização
-- Firebase Authentication anônimo: confirmado pelo responsável.
-- Aplicativo Web e domínio `serviaapps.github.io`: confirmados.
-- Realtime Database criado: confirmado.
-- Cloud Functions pode exigir **Blaze (faturamento)**. **Não ativar nem associar faturamento sem autorização específica.**
-- A implantação requer uma sessão Firebase CLI autenticada com permissão de deploy ou integração Firebase conectada.
+## Evidência atual
+- Execução GitHub Actions #25 aprovada: https://github.com/serviaapps/telajunto-bingo/actions/runs/41630055006
+- Os testes do emulador não substituem a homologação com navegadores reais.
 
-## Antes de implantar
-1. Validar regras de RTDB no Emulator Suite e testar isolamento das cartelas entre UIDs.
-2. Testar criação de sala, entrada, sorteio, marcação e reconexão com duas sessões.
-3. Auditar limites de sala, concorrência, abuso e expiração; implementar App Check/rate limiting antes de divulgação pública.
-4. Executar `node --test tests/bingo-engine.test.mjs`.
-5. Na raiz, instalar Firebase CLI em ambiente de desenvolvimento e autenticar com conta autorizada. Executar `firebase use servia-marca-ai` e `firebase emulators:start`.
-6. Após testes e aprovação de custos, implantar `firebase deploy --only functions,database`.
-7. Integrar e publicar a interface da branch em um ambiente de homologação antes de mesclar à `main`.
+## Preparação sem publicação
+1. Consultar `docs/HOMOLOGACAO_V1_1.md` e registrar os cenários de aceite.
+2. Preferir um projeto Firebase **separado** para homologação, evitando alterações no banco da V1 ou de outros projetos.
+3. Confirmar que o Firebase de homologação tem Authentication anônimo, RTDB e domínio autorizado; configurar `firebase-config.js` **somente na prévia**.
+4. Preparar uma URL de prévia da branch, sem mesclar em `main` e sem substituir a página original.
+5. Antes de publicar regras em qualquer ambiente, solicitar autorização explícita do responsável e revisar o projeto/destino.
+6. Depois da autorização e da publicação controlada, testar dois celulares com sessões distintas e uma TV conforme o roteiro.
+7. Não liberar ao público antes do aceite formal.
 
-**Atenção:** as regras de banco propostas permitem apenas leitura autenticada dos membros e leitura privada do próprio jogador; escrita direta é bloqueada. Somente funções administrativas devem gravar estado oficial.
-
-## Limitações atuais
-- Sem App Check, rate limiting completo, limpeza automática de salas e testes de concorrência/emulador.
-- Sem implantação de Functions; botões retornarão erro até que o backend seja implantado.
-- Sem confirmação de custos/plano Blaze.
-- Não foi executado teste ponta a ponta em dois aparelhos.
+## Restrições
+- Sem Cloud Functions, Blaze ou cobrança ativada por este procedimento.
+- Não executar `firebase deploy --only functions,database`: não corresponde à arquitetura Spark atual.
+- Não há garantia de sorteio justo, validação autoritativa de Bingo, limpeza automática ou proteção completa contra abuso.
+- A V1.1 é recreativa, sem apostas ou prêmios.
