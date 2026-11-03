@@ -19,3 +19,13 @@ Projeto indicado pelo responsável: `servia-marca-ai`.
 7. Implantar e validar com dois celulares.
 
 Não compartilhar conta de serviço, token administrativo ou senha. Implantação de Functions pode requerer plano de faturamento; pedir aprovação antes.
+
+## Serviços confirmados pelo responsável
+- Authentication: provedor Anônimo ativado.
+- Realtime Database: `https://servia-marca-ai-default-rtdb.firebaseio.com/` criado.
+- Ainda não foi possível verificar os serviços por acesso administrativo direto.
+
+## Próximo dado necessário
+Registrar um **aplicativo Web** em Configurações do projeto > Geral > Seus apps > Adicionar app > Web (`</>`).
+Copiar o objeto público `firebaseConfig` (apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId). Essas são configurações do SDK cliente, **não são chaves administrativas**. Não enviar JSON de conta de serviço, credenciais privadas nem tokens.
+O objeto de configuração deve ser usado na integração do cliente após validação das regras de acesso e implantação do backend autoritativo.
