@@ -2,7 +2,7 @@ import { onCall, HttpsError } from "firebase-functions/v2/https";
 import { initializeApp } from "firebase-admin/app";
 import { getDatabase } from "firebase-admin/database";
 import { randomInt } from "node:crypto";
-import { validateCard, verifyBingo, nextDraw, markNumber } from "../src/bingo-engine.mjs";
+import { validateCard, verifyBingo, nextDraw, markNumber } from "./bingo-engine.mjs";
 
 initializeApp();
 const db = getDatabase();
