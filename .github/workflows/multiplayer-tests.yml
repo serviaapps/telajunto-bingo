@@ -17,7 +17,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test tests/bingo-engine.test.mjs
+      - run: node --test tests/bingo-engine.test.mjs tests/homologacao-isolamento.test.mjs
+      - run: node --check multiplayer-homolog.js
+      - run: node --check tv-homolog.js
+      - run: node --check homologacao-runtime.js
       - run: node --check functions/index.js
       - run: node --check multiplayer.js
       - run: node --check tv.js
