@@ -4,7 +4,7 @@
     ".write": false,
     "rooms": {
       "$roomId": {
-        ".read": "auth != null",
+        ".read": "auth != null && (!data.exists() || data.child('members').child(auth.uid).exists())",
         ".write": "auth != null && !data.exists() && newData.child('hostUid').val() === auth.uid && newData.child('members').child(auth.uid).child('role').val() === 'host' && newData.child('drawnMap').val() === null && newData.child('createdAt').val() <= now && newData.child('expiresAt').val() > now && newData.child('expiresAt').val() <= now + 86400000",
         "members": {
           "$uid": {
@@ -26,9 +26,9 @@
       "$roomId": {
         "$uid": {
           ".read": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists()",
-          ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && !data.exists() && newData.hasChildren(['grid','marked']) && newData.child('marked').isString() && newData.child('marked').val() === ''",
+          ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && !data.exists() && newData.hasChildren(['grid','marked']) && newData.child('marked').isString() && newData.child('marked').val() === '_'",
           "marked": {
-            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && newData.isString() && newData.val().length <= 60"
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && newData.isString() && newData.val().length <= 60 && newData.val().beginsWith('_')"
           }
         }
       }
