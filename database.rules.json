@@ -4,13 +4,29 @@
     ".write": false,
     "rooms": {
       "$roomId": {
-        ".read": "auth != null && data.child('members').child(auth.uid).exists()"
+        ".read": "auth != null && data.child('members').child(auth.uid).exists()",
+        ".write": "auth != null && !data.exists() && newData.child('hostUid').val() === auth.uid && newData.child('members').child(auth.uid).child('role').val() === 'host' && newData.child('drawnMap').val() === null && newData.child('createdAt').val() <= now && newData.child('expiresAt').val() > now && newData.child('expiresAt').val() <= now + 86400000",
+        "members": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('rooms').child($roomId).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && newData.child('role').val() === 'player' && newData.child('name').isString() && newData.child('name').val().length >= 2 && newData.child('name').val().length <= 40",
+            ".validate": "newData.hasChildren(['name','role','joinedAt'])"
+          }
+        },
+        "drawnMap": {
+          "$number": {
+            ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('hostUid').val() && root.child('rooms').child($roomId).child('expiresAt').val() > now && !data.exists() && newData.val() === true && $number.matches(/^(?:[1-9]|[1-8][0-9]|90)$/)"
+          }
+        }
       }
     },
     "privateRooms": {
       "$roomId": {
         "$uid": {
-          ".read": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists()"
+          ".read": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists()",
+          ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && !data.exists() && newData.hasChildren(['grid','marked']) && newData.child('marked').isString() && newData.child('marked').val() === ''",
+          "marked": {
+            ".write": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('members').child(auth.uid).exists() && root.child('rooms').child($roomId).child('expiresAt').val() > now && newData.isString() && newData.val().length <= 60"
+          }
         }
       }
     }
