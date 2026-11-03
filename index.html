@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="TelaJunto Bingo — bingo de 90 números para jogar junto.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>TelaJunto Bingo</title>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">TJ</span><div><strong>TelaJunto</strong><small>BINGO • 90 BOLAS</small></div></div>
+    <button id="installBtn" class="button ghost" hidden>Instalar app</button>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div><p class="eyebrow">JOGUE JUNTO, ONDE ESTIVER</p><h1>Seu bingo começa aqui.</h1><p class="muted">Sorteie números, acompanhe o histórico e marque suas cartelas. Seus dados ficam salvos neste aparelho.</p></div>
+      <div class="status"><span class="status-dot"></span><span id="saveStatus">Salvo neste aparelho</span></div>
+    </section>
+
+    <section class="draw-panel panel">
+      <div class="draw-heading"><div><p class="eyebrow">NÚMERO SORTEADO</p><h2 id="drawNumber" aria-live="polite">—</h2><p id="drawWords" class="draw-words">Pronto para começar?</p></div>
+        <div class="draw-actions"><button id="drawBtn" class="button primary">Sortear número</button><button id="repeatBtn" class="button secondary" disabled>Repetir chamada</button></div>
+      </div>
+      <div class="draw-footer"><span id="progressText">0 de 90 números</span><div class="progress"><span id="progressBar"></span></div><button id="resetBtn" class="text-button">Nova partida</button></div>
+    </section>
+
+    <section class="content-grid">
+      <div class="panel history-panel"><div class="section-heading"><div><p class="eyebrow">ACOMPANHAMENTO</p><h2>Já saíram</h2></div><span id="historyCount" class="count">0</span></div><div id="history" class="history" aria-label="Histórico dos números sorteados"><p class="muted empty">Os números sorteados aparecerão aqui.</p></div></div>
+      <div class="panel voice-panel"><div class="section-heading"><div><p class="eyebrow">NARRAÇÃO</p><h2>Chamada por voz</h2></div><span class="voice-icon">♫</span></div>
+        <label class="toggle-row"><span><strong>Ativar narração</strong><small>Usa a voz disponível no aparelho.</small></span><input id="voiceEnabled" type="checkbox" checked></label>
+        <label class="field">Velocidade <output id="rateValue">1,0×</output><input id="voiceRate" type="range" min="0.7" max="1.3" step="0.1" value="1"></label>
+        <label class="field">Volume <output id="volumeValue">80%</output><input id="voiceVolume" type="range" min="0" max="1" step="0.1" value="0.8"></label>
+        <button id="testVoiceBtn" class="button secondary full">Testar narração</button>
+        <p id="voiceNotice" class="small muted">A disponibilidade de voz offline depende do navegador e das vozes instaladas no aparelho.</p>
+      </div>
+    </section>
+
+    <section class="panel cards-panel"><div class="section-heading"><div><p class="eyebrow">SUAS CARTELAS</p><h2>Cartelas da partida</h2><p class="muted">Toque em um número para marcar ou desmarcar.</p></div><button id="addCardBtn" class="button secondary">+ Nova cartela</button></div><div id="cards" class="cards-grid"></div></section>
+    <footer><span>TelaJunto Bingo • versão 0.1.0</span><span>Funciona offline depois do primeiro carregamento.</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
