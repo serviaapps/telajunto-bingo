@@ -19,6 +19,9 @@
         },
         "expiresAt": {
           ".read": "auth != null"
+        },
+        "lastDraw": {
+          ".write": "auth != null && auth.uid === root.child('rooms').child($roomId).child('hostUid').val() && root.child('rooms').child($roomId).child('expiresAt').val() > now && newData.isNumber() && newData.val() >= 1 && newData.val() <= 90 && root.child('rooms').child($roomId).child('drawnMap').child(newData.val()).val() === true"
         }
       }
     },
