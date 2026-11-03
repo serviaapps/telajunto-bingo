@@ -35,3 +35,13 @@ jobs:
           java-version: '21'
       - run: npm install --no-save firebase@12 @firebase/rules-unit-testing@5 firebase-tools@14
       - run: npx firebase emulators:exec --project demo-telajunto-rules --only database "node --test tests/database-rules.test.mjs"
+
+      - name: Upload Firebase emulator diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: firebase-emulator-diagnostics
+          path: |
+            database-debug.log
+            firebase-debug.log
+          if-no-files-found: ignore
