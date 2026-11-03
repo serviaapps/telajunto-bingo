@@ -36,11 +36,11 @@ function render(){
  if(!room||!card)return;
  const drawn=Object.keys(room.drawnMap||{}).map(Number).sort((a,b)=>a-b);
  $("roomMembers").textContent=Object.values(room.members||{}).map(x=>x.name).join(" • ");
- $("liveBall").textContent=drawn.length?drawn[drawn.length-1]:"—";
+ $("liveBall").textContent=room.lastDraw??"—";
  $("drawCounter").textContent=drawn.length+" de 90 números";
  $("liveHistory").replaceChildren();
  for(const n of drawn){const s=document.createElement("span");s.className="history-ball";s.textContent=n;$("liveHistory").append(s);}
- $("liveDrawBtn").hidden=!host;\n const bingoReady=verifyBingo(card.grid,drawn);\n $("gameMessage").dataset.bingoPossible=String(bingoReady);
+ $("liveDrawBtn").hidden=!host;\n $("tvAccess").hidden=!host;\n const bingoReady=verifyBingo(card.grid,drawn);\n $("gameMessage").dataset.bingoPossible=String(bingoReady);
  const marks=new Set(readMarks()),grid=$("liveCard");grid.replaceChildren();
  for(const row of card.grid)for(const n of row){
   const b=document.createElement("button");b.type="button";b.className="bingo-cell";
@@ -62,7 +62,7 @@ function watch(id,isHost){
  unsub.forEach(f=>f());unsub=[];roomId=id;host=isHost;
  $("roomPanel").hidden=false;$("roomTitle").textContent="Sala "+id;
  const invite=new URL("./multiplayer.html",location.href);invite.searchParams.set("sala",id);
- $("inviteLink").href=invite.href;$("inviteLink").textContent=invite.href;history.replaceState(null,"",invite.href);
+ $("inviteLink").href=invite.href;$("inviteLink").textContent=invite.href;\n const tv=new URL("./tv.html",location.href);tv.searchParams.set("sala",id);$("tvLink").href=tv.href;\n history.replaceState(null,"",invite.href);
  unsub.push(onValue(ref(db,"rooms/"+id),snap=>{room=snap.val();if(!room){$("gameMessage").textContent="Sala indisponível.";return;}render();},e=>$("gameMessage").textContent=error(e)));
  unsub.push(onValue(ref(db,"privateRooms/"+id+"/"+auth.currentUser.uid),snap=>{card=snap.val();render();},e=>$("gameMessage").textContent=error(e)));
 }
@@ -104,7 +104,7 @@ $("liveDrawBtn").onclick=async()=>{
   const available=Array.from({length:90},(_,i)=>i+1).filter(n=>!used.has(n));
   if(!available.length)throw new Error("Todos os números foram sorteados.");
   const n=available[randomNumber(available.length)];
-  await set(ref(db,"rooms/"+roomId+"/drawnMap/"+n),true);
+  await set(ref(db,"rooms/"+roomId+"/drawnMap/"+n),true);\n  await set(ref(db,"rooms/"+roomId+"/lastDraw"),n);
   $("gameMessage").textContent="Número sorteado: "+n;
  }catch(e){$("gameMessage").textContent=error(e);}finally{setBusy(false);}
 };
