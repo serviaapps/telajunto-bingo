@@ -20,3 +20,5 @@ jobs:
       - run: node --test tests/bingo-engine.test.mjs
       - run: node --check functions/index.js
       - run: node --check multiplayer.js
+      - run: node --check tv.js
+      - run: node -e "JSON.parse(require('node:fs').readFileSync('database.rules.json','utf8'))"
