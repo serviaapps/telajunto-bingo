@@ -7,18 +7,18 @@ test("homologação aponta somente para projeto demo",()=>{
  assert.match(runtime,/demo-telajunto-rules/);
  assert.match(runtime,/connectAuthEmulator/);
  assert.match(runtime,/connectDatabaseEmulator/);
- assert.doesNotMatch(runtime,/servia-marca-ai|firebase-config\\.js/);
+ assert.doesNotMatch(runtime,/servia-marca-ai|firebase-config\.js/);
 });
 test("páginas de homologação não carregam scripts de produção",()=>{
  for(const [page,script] of [["multiplayer-homolog.html","multiplayer-homolog.js"],["tv-homolog.html","tv-homolog.js"]]){
   const html=read(page);
   assert.ok(html.includes('src="./'+script+'"'));
-  assert.doesNotMatch(html,/src="\\.\\/(?:multiplayer|tv)\\.js"/);
+  assert.doesNotMatch(html,/src="\.\/(?:multiplayer|tv)\.js"/);
  }
  for(const path of ["multiplayer-homolog.js","tv-homolog.js"]){
   const js=read(path);
-  assert.match(js,/homologacao-runtime\\.js/);
-  assert.doesNotMatch(js,/firebase-config\\.js|initializeApp\\(/);
+  assert.match(js,/homologacao-runtime\.js/);
+  assert.doesNotMatch(js,/firebase-config\.js|initializeApp\(/);
  }
 });
 test("configuração de homologação não inclui deploy nem Functions",()=>{
