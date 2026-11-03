@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="TelaJunto Bingo">
+<rect width="512" height="512" rx="104" fill="#101827"/>
+<circle cx="256" cy="256" r="188" fill="#f4a340"/>
+<circle cx="256" cy="256" r="160" fill="#fff3df"/>
+<circle cx="256" cy="256" r="138" fill="none" stroke="#101827" stroke-width="9"/>
+<text x="256" y="248" text-anchor="middle" fill="#101827" font-family="Arial,sans-serif" font-size="124" font-weight="900">TJ</text>
+<text x="256" y="322" text-anchor="middle" fill="#101827" font-family="Arial,sans-serif" font-size="45" font-weight="800" letter-spacing="5">BINGO</text>
+</svg>
