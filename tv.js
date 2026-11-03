@@ -18,7 +18,7 @@ async function connect(code){
  unsubscribe=onValue(ref(db,"rooms/"+code),snap=>{
   const room=snap.val();if(!room){status("Sala indisponível.");return;}
   const nums=Object.keys(room.drawnMap||{}).map(Number).sort((a,b)=>a-b);
-  $("ball").textContent=nums.length?nums[nums.length-1]:"—";
+  $("ball").textContent=room.lastDraw??"—";
   $("count").textContent=nums.length+" de 90 números";
   $("room").textContent="SALA "+code;
   $("history").replaceChildren();
