@@ -1,0 +1,22 @@
+name: Multiplayer engine tests
+on:
+  push:
+    branches: [feat/v1-1-multiplayer-foundation]
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'functions/**'
+      - 'database.rules.json'
+      - '.github/workflows/multiplayer-tests.yml'
+jobs:
+  bingo-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/bingo-engine.test.mjs
+      - run: node --check functions/index.js
+      - run: node --check multiplayer.js
