@@ -1,0 +1,4 @@
+import test from "node:test";import assert from "node:assert/strict";import {card75,draw75,letter75,toggle75,bingo75,line75} from "./bingo75-engine.mjs";
+test("75 bolas, faixas BINGO e centro livre",()=>{const c=card75();assert.equal(c[2][2],null);assert.equal(c.flat().filter(Number.isInteger).length,24);assert.equal(letter75(15),"B");assert.equal(letter75(16),"I");assert.equal(letter75(30),"I");assert.equal(letter75(31),"N");assert.equal(letter75(46),"G");assert.equal(letter75(75),"O");});
+test("sorteio não repete e termina em 75",()=>{let a=[];for(let i=0;i<75;i++){const n=draw75(a,()=>0);assert.ok(!a.includes(n));a.push(n);}assert.equal(draw75(a),null);});
+test("jogador marca e desmarca livremente",()=>{const c=card75(),n=c[0][0];assert.deepEqual(toggle75(c,[],n),[n]);assert.deepEqual(toggle75(c,[n],n),[]);assert.equal(bingo75(c,[]),false);assert.equal(line75(c,[]),false);});
