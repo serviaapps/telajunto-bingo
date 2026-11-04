@@ -1,0 +1,26 @@
+name: Bingo 75 V1.1 - testes isolados
+on:
+  push:
+    branches:
+      - feat/v1-1-multiplayer-foundation
+    paths:
+      - 'functions/bingo75-engine.mjs'
+      - 'functions/bingo75-engine.test.mjs'
+      - '.github/workflows/bingo75-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bingo75-unit:
+    name: Motor Bingo 75 (sem Firebase)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe
+        run: node --check functions/bingo75-engine.mjs && node --check functions/bingo75-engine.test.mjs
+      - name: Testar motor Bingo 75
+        run: node --test functions/bingo75-engine.test.mjs
